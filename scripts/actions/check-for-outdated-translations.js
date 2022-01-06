@@ -34,22 +34,12 @@ const checkOutdatedTranslations = async (url) => {
     .reduce((files, file) => {
       const contents = fs.readFileSync(path.join(process.cwd(), file.filename));
       const { data } = frontmatter(contents);
-      return [
-        ...files,
-        {
-          path: file.filename,
-          locales: data.translate || [],
-        },
-      ];
+      return [...files, { path: file.filename, locales: data.translate || [] }];
     }, []);
 
   const removedMdxFileNames = mdxFiles
     .filter((f) => f.status === 'removed')
     .map(prop('filename'));
-
-  const renamedMdxFileNames = mdxFiles
-    .filter((f) => f.status === 'renamed')
-    .map(prop('previous_filename'));
 
   // if a locale was removed from the translate frontmatter, we want to remove the translated version of that file.
 
@@ -64,15 +54,7 @@ const checkOutdatedTranslations = async (url) => {
     doI18nFilesExist(name, ADDITIONAL_LOCALES)
   );
 
-  const renamedFiles = renamedMdxFileNames.flatMap((name) =>
-    doI18nFilesExist(name, ADDITIONAL_LOCALES)
-  );
-
-  const orphanedI18nFiles = [
-    ...modifiedFiles,
-    ...removedFiles,
-    ...renamedFiles,
-  ];
+  const orphanedI18nFiles = [...modifiedFiles, ...removedFiles];
 
   if (orphanedI18nFiles.length > 0) {
     orphanedI18nFiles.forEach((f) =>
@@ -103,8 +85,4 @@ const main = async () => {
   }
 };
 
-if (require.main === module) {
-  main();
-}
-
-module.exports = { main, checkOutdatedTranslations };
+module.exports = main;
