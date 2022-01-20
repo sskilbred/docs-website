@@ -281,6 +281,9 @@ These API functions include links to the API Explorer, where you can create, del
     curl -X DELETE 'https://api.newrelic.com/v2/alerts_policies/<var>$POLICY_ID</var>.json' \
          -H 'Api-Key:<a href="/docs/apis/rest-api-v2/getting-started/introduction-new-relic-rest-api-v2#api_key"><var>$API_KEY</var></a>' -i
     ```
+    <Callout variant="important">
+      Deleting a policy will also archive all conditions associated to the policy.
+    </Callout>
   </Collapser>
 
   <Collapser
